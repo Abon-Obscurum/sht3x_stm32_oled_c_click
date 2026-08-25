@@ -25,6 +25,14 @@ This driver allows the user to get temperature and humidity readings from an SHT
 | `sht3xstm32.h` | Public types, constants, and function declarations |
 | `sht3xstm32.c` | Driver implementation |
 
+## Hardware Setup
+
+| Pin Name | Shield Pin | MCU Pin |
+| -------- | ---------- | ------- |
+| SDA      | D4         | PB7     |
+| SCL      | D5         | PB6     |
+
+
 ## API reference
 
 ### Data types  
