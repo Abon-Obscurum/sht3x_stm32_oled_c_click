@@ -126,14 +126,16 @@ int main(void)
 			Error_Handler();
 		}
 
-		SHT3xSTM32_UART_MenuHandler();
+
       /* Initialize OLED Display */
       Display_Init();
       Display_SetOrigin(OFFSET_X, OFFSET_Y);
+
       HAL_Delay(100);
       OLED_PlayStartupAnimation();
       OLED_ShowPlaceholder();
       HAL_Delay(1234);
+      SHT3xSTM32_UART_MenuHandler();
 
 
 
