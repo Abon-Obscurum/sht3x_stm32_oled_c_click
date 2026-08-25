@@ -129,3 +129,13 @@ SHT3xSTM32_UART_MenuHandler(); // blocks; type r / h / q at the terminal
 - `SHT3_STM32_TIMEOUT` (30 ms) is reused both as the post-measurement wait and as the general HAL I2C timeout; the datasheet only specifies ~15 ms for the measurement itself.
 
 - `SHT3xSTM32_HeaterTest()` blocks for ~10 seconds (`HAL_Delay`) — don't call it from a timer callback or any time-critical path.
+
+# DISPALAY PART
+## oled.c
+oled.c is based on the supplied library from Moodle. It was slightly changed, so that the coordinates we later use actually land on the Display and the whole Display is toggled.
+We also Added Text rendering via Bitmasks with 5x7 px per Character. 
+
+The included Startup animation wasn't necessary but considered nice.
+## show_display.c
+Naming of the two files could have been better. The functions in this file accomplish the higher Level Display tasks, like toggling the display modes.
+The functions called in main correspond to this file. 
