@@ -1,3 +1,18 @@
+# Pin Assignement
+
+| Pin Name | Shield Pin / Board Pin | MCU Pin (STM32) | Description |
+| :--- | :--- | :--- | :--- |
+| **SDA** | D4 / I2C-SDA | **PB7** | I²C Data Signal (for the SHT3x Sensor) |
+| **SCL** | D5 / I2C-SCL | **PB6** | I²C Clock Signal (for the SHT3x Sensor) |
+| **SPI_SCK** | D13 / SCK | **PA5 / PB3** | SPI Clock Signal (for the OLED C Click Display) |
+| **SPI_MOSI** | D11 / SDI (MOSI) | **PA7 / PB5** | SPI Serial Data Input for display data |
+| **OLED_CS** | D10 / CS | **PB6 / PA4** | SPI Chip Select (Display Selection) |
+| **OLED_DC** | D9 / PWM | **PC7 / PA8** | Data/Command Control (Switches between Data/Command mode) |
+| **OLED_RST** | D8 / RST | **PA9 / PC7** | Hardware Reset Pin for the display |
+| **OLED_EN** | D7 / INT | **PA10** | Display Enable / Power-On Pin |
+| **VCC (3.3V)** | 3V3 / +3.3V | **3V3** | 3.3V Power Supply |
+| **GND** | GND | **GND** | Common Ground |
+
 # SHT3x
 
 Driver for the SHT3x temperature and humidity sensor 
