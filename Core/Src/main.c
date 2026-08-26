@@ -27,6 +27,7 @@
 #include "show_display.h"
 #include "stdlib.h"
 #include "sht3xstm32.h"
+#include "uart_oled_test.h"
 //#include "__oledc_driver.h"
 /* USER CODE END Includes */
 
@@ -133,7 +134,8 @@ int main(void)
       /* Initialize OLED Display */
       Display_Init();
       Display_SetOrigin(OFFSET_X, OFFSET_Y);
-
+      /* Initialize UART Interactive Test */
+	  UART_OLED_Test_Init();
       HAL_Delay(100);
       //just playing around
       OLED_PlayStartupAnimation();
