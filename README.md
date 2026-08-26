@@ -4,8 +4,9 @@
 | :--- | :--- | :--- | :--- |
 | **I2C1_SDA** | I2C1 | **PB7** | I²C Data signal for SHT3x sensor |
 | **I2C1_SCL** | I2C1 | **PB6** | I²C Clock signal for SHT3x sensor (also written HIGH in `MX_GPIO_Init_2`) |
-| **SPI1_SCK** | SPI1 | **PA5** | SPI1 Clock signal for OLED C Click display |
-| **SPI1_MOSI** | SPI1 | **PA7** | SPI1 Master-Out-Slave-In data signal for OLED C Click display |
+| **SPI1_SCK** | SPI1 | **PB3** | SPI1 Clock signal for OLED C Click display |
+| **SPI1_MOSI** | SPI1 | **PB5** | SPI1 Master-Out-Slave-In data signal for OLED C Click display |
+| **SPI1_MISO** | SPI1 | **PB4** | SPI1 Master-In-Slave-Out data signal |
 | **OLED_DC / CS** | GPIO Output | **PB0** | Push-Pull output, initialized HIGH (Display control signal) |
 | **OLED_RST** | GPIO Output | **PB1** | Push-Pull output, initialized HIGH (Display reset signal) |
 | **SW1_BTN** | GPIO Input | **PA3** | User button input (Active LOW: short press cycles modes, long press resets min/max) |
