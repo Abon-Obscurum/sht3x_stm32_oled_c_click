@@ -2,15 +2,18 @@
 
 | Pin Name | Shield Pin / Board Pin | MCU Pin (STM32) | Description |
 | :--- | :--- | :--- | :--- |
-| **SDA** | D4 / I2C-SDA | **PB7** | I²C Data Signal (for the SHT3x Sensor) |
-| **SCL** | D5 / I2C-SCL | **PB6** | I²C Clock Signal (for the SHT3x Sensor) |
-| **SPI_SCK** | D13 / SCK | **PA5 / PB3** | SPI Clock Signal (for the OLED C Click Display) |
-| **SPI_MOSI** | D11 / SDI (MOSI) | **PA7 / PB5** | SPI Serial Data Input for display data |
-| **OLED_CS** | D10 / CS | **PB6 / PA4** | SPI Chip Select (Display Selection) |
-| **OLED_DC** | D9 / PWM | **PC7 / PA8** | Data/Command Control (Switches between Data/Command mode) |
-| **OLED_RST** | D8 / RST | **PA9 / PC7** | Hardware Reset Pin for the display |
-| **OLED_EN** | D7 / INT | **PA10** | Display Enable / Power-On Pin |
-| **VCC (3.3V)** | 3V3 / +3.3V | **3V3** | 3.3V Power Supply |
+| **SDA** | D4 / I2C-SDA | **PB7** | I²C Data Signal (SHT3x Sensor) |
+| **SCL** | D5 / I2C-SCL | **PB6** | I²C Clock Signal (SHT3x Sensor) |
+| **SPI_SCK** | D13 / SCK | **PA5** | SPI1 Clock Signal (OLED C Click Display) |
+| **SPI_MOSI** | D11 / SDI (MOSI) | **PA7** | SPI1 Data Line / Master Out Slave In (OLED C Click Display) |
+| **OLED_CS** | D10 / CS | **PB6** | SPI1 Chip Select (Display Selection) |
+| **OLED_DC** | D9 / PWM | **PB0** | Data/Command Select (Switches between command & pixel data) |
+| **OLED_RST** | D8 / RST | **PB1** | Hardware Reset (Display Reset Pin) |
+| **OLED_EN** | D7 / INT | **PA10** | Display Enable / Power Control Pin |
+| **SW1_BTN** | D3 / PWM / GPIO | **PA3** | User Button Input (Short press: Cycle Mode / Long press >=2s: Reset Min/Max) |
+| **UART_TX** | D1 / TX | **PA2** | USART2 Transmit (Debug / Menu Interface) |
+| **UART_RX** | D0 / RX | **PA3** | USART2 Receive (Debug / Menu Interface) |
+| **VCC (3.3V)** | 3V3 / +3.3V | **3V3** | 3.3V System Power Supply |
 | **GND** | GND | **GND** | Common Ground |
 
 # SHT3x
