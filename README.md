@@ -1,20 +1,16 @@
 # Pin Assignement
 
-| Pin Name | Shield Pin / Board Pin | MCU Pin (STM32) | Description |
+| Pin Name | Peripheral / Function | MCU Pin (STM32) | Description |
 | :--- | :--- | :--- | :--- |
-| **SDA** | D4 / I2C-SDA | **PB7** | I²C Data Signal (SHT3x Sensor) |
-| **SCL** | D5 / I2C-SCL | **PB6** | I²C Clock Signal (SHT3x Sensor) |
-| **SPI_SCK** | D13 / SCK | **PA5** | SPI1 Clock Signal (OLED C Click Display) |
-| **SPI_MOSI** | D11 / SDI (MOSI) | **PA7** | SPI1 Data Line / Master Out Slave In (OLED C Click Display) |
-| **OLED_CS** | D10 / CS | **PB6** | SPI1 Chip Select (Display Selection) |
-| **OLED_DC** | D9 / PWM | **PB0** | Data/Command Select (Switches between command & pixel data) |
-| **OLED_RST** | D8 / RST | **PB1** | Hardware Reset (Display Reset Pin) |
-| **OLED_EN** | D7 / INT | **PA10** | Display Enable / Power Control Pin |
-| **SW1_BTN** | D3 / PWM / GPIO | **PA3** | User Button Input (Short press: Cycle Mode / Long press >=2s: Reset Min/Max) |
-| **UART_TX** | D1 / TX | **PA2** | USART2 Transmit (Debug / Menu Interface) |
-| **UART_RX** | D0 / RX | **PA3** | USART2 Receive (Debug / Menu Interface) |
-| **VCC (3.3V)** | 3V3 / +3.3V | **3V3** | 3.3V System Power Supply |
-| **GND** | GND | **GND** | Common Ground |
+| **I2C1_SDA** | I2C1 | **PB7** | I²C Data signal for SHT3x sensor |
+| **I2C1_SCL** | I2C1 | **PB6** | I²C Clock signal for SHT3x sensor (also written HIGH in `MX_GPIO_Init_2`) |
+| **SPI1_SCK** | SPI1 | **PA5** | SPI1 Clock signal for OLED C Click display |
+| **SPI1_MOSI** | SPI1 | **PA7** | SPI1 Master-Out-Slave-In data signal for OLED C Click display |
+| **OLED_DC / CS** | GPIO Output | **PB0** | Push-Pull output, initialized HIGH (Display control signal) |
+| **OLED_RST** | GPIO Output | **PB1** | Push-Pull output, initialized HIGH (Display reset signal) |
+| **SW1_BTN** | GPIO Input | **PA3** | User button input (Active LOW: short press cycles modes, long press resets min/max) |
+| **USART2_TX** | USART2 | **PA2** | Serial Transmit for UART menu and debug logging |
+| **USART2_RX** | USART2 | **PA3** | Serial Receive for UART menu and debug logging |
 
 # SHT3x
 
