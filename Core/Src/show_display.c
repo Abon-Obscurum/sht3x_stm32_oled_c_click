@@ -133,9 +133,6 @@ void OLED_NextDisplayMode(void) {
 }
 
 void OLED_ResetMinMax(void) {
-	char msg[20];
-    first_sample = 1;
-    sprintf(msg,"MIN/MAX RESET!");
-    //HAL_UART_Transmit(&huart2, msg, sizeof(msg), HAL_MAX_DELAY);
+	first_sample = 1;
     OLED_ShowResetConfirmation();
 }

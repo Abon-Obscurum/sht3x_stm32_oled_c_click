@@ -1,5 +1,20 @@
-# SHT3x
+# Pin Assignement
 
+| Pin Name | Peripheral / Function | MCU Pin (STM32) | Description |
+| :--- | :--- | :--- | :--- |
+| **I2C1_SDA** | I2C1 | **PB7** | I²C Data signal for SHT3x sensor |
+| **I2C1_SCL** | I2C1 | **PB6** | I²C Clock signal for SHT3x sensor (also written HIGH in `MX_GPIO_Init_2`) |
+| **SPI1_SCK** | SPI1 | **PB3** | SPI1 Clock signal for OLED C Click display |
+| **SPI1_MOSI** | SPI1 | **PB5** | SPI1 Master-Out-Slave-In data signal for OLED C Click display |
+| **SPI1_MISO** | SPI1 | **PB4** | SPI1 Master-In-Slave-Out data signal |
+| **OLED_DC / CS** | GPIO Output | **PB0** | Push-Pull output, initialized HIGH (Display control signal) |
+| **OLED_RST** | GPIO Output | **PB1** | Push-Pull output, initialized HIGH (Display reset signal) |
+| **SW1_BTN** | GPIO Input | **PA3** | User button input (Active LOW: short press cycles modes, long press resets min/max) |
+| **USART2_TX** | USART2 | **PA2** | Serial Transmit for UART menu and debug logging |
+| **USART2_RX** | USART2 | **PA3** | Serial Receive for UART menu and debug logging |
+
+# SHT3x
+	
 Driver for the SHT3x temperature and humidity sensor 
 
 This driver allows the user to get temperature and humidity readings from an SHT3x sensor over I2C on an STM32 (HAL-based), with CRC-8 validation of every reading. It also includes heater control with a built-in self-test, and a standalone interactive UART menu so the sensor can be tested independently of the rest of the application.
@@ -8,7 +23,7 @@ This driver allows the user to get temperature and humidity readings from an SHT
 
   - Sensor init with bus presence check (`HAL_I2C_IsDeviceReady`) and soft reset
 
-- Single-shot, high-repeatability measurement (clock-stretching command `0x2C06`)
+- Single-shot, high-repeatability measurement (0x2C06). Clock stretching is not relied upon — a fixed 15 ms delay is used before reading, per the datasheet's worst-case conversion time.
 
 - CRC-8 check on both the temperature and humidity bytes before the reading is accepted
 
@@ -40,23 +55,14 @@ This driver allows the user to get temperature and humidity readings from an SHT
 ```c
 
 typedef struct {
-
-I2C_HandleTypeDef *hi2c; // I2C peripheral, e.g. &hi2c1
-
-uint8_t deviceAddress; // 7-bit I2C address
-
-uint8_t initialized; // set once Init() has run successfully
-
+    I2C_HandleTypeDef *hi2c;      // I2C peripheral, e.g. &hi2c1
+    uint8_t deviceAddress;        // 7-bit I2C address
+    uint8_t initialized;          // set once Init() has run successfully
 } SHT3xSTM32_Handle_t;
 
-  
-
 typedef struct {
-
-float temperature; // °C
-
-float humidity; // %RH (0-100)
-
+    float temperature;   // °C
+    float humidity;       // %RH (0-100)
 } SHT3xSTM32_Data_t;
 
 ```
@@ -65,28 +71,28 @@ float humidity; // %RH (0-100)
 
 ### Core functions
 
-| Function                                       | Description                                                                                                                                                              |
-| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `SHT3xSTM32_Init(handle, hi2c, deviceAddress)` | Fills in the handle, confirms the sensor answers on the bus, and soft-resets it to a known state.                                                                        |
-| `SHT3xSTM32_Read(handle, data)`                | Triggers a measurement, waits for conversion, reads 6 bytes, checks CRC, and writes the converted values into `data`.                                                    |
-| `SHT3xSTM32_SetHeater(handle, enable)`         | Turns the sensor's built-in heater on (`1`) or off (`0`).                                                                                                                |
-| `SHT3xSTM32_HeaterTest(handle)`                | Reads, enables the heater for ~10 s, reads again, and returns `HAL_OK` if temperature rose by more than 0.5 °C. Always turns the heater back off, even on a failed read. |
+| Function | Parameters | Returns | Description |
+| --- | --- | --- | --- |
+| `HAL_StatusTypeDef SHT3xSTM32_Init(SHT3xSTM32_Handle_t *handle, I2C_HandleTypeDef *hi2c, uint8_t deviceAddress)` | `handle` – handle to fill in, reused by later calls like `SHT3xSTM32_Read()`<br>`hi2c` – I2C peripheral the sensor is wired to<br>`deviceAddress` – 7-bit I2C address of the sensor | `HAL_OK` if the sensor was found and reset OK, an error code otherwise | Fills in the handle, confirms the sensor answers on the bus, and soft-resets it to a known state. |
+| `HAL_StatusTypeDef SHT3xSTM32_Read(SHT3xSTM32_Handle_t *handle, SHT3xSTM32_Data_t *data)` | `handle` – handle previously set up with `SHT3xSTM32_Init()`<br>`data` – where the finished reading gets written | `HAL_OK` on success, an error code if the I2C transfer failed or the CRC didn't match | Triggers a measurement, waits for conversion, reads 6 bytes, checks CRC, and writes the converted values into `data`. |
+| `HAL_StatusTypeDef SHT3xSTM32_SetHeater(SHT3xSTM32_Handle_t *handle, uint8_t enable)` | `handle` – handle previously set up with `SHT3xSTM32_Init()`<br>`enable` – non-zero to turn the heater on, `0` to turn it off | `HAL_OK` if the command was sent successfully, an error code otherwise | Turns the sensor's built-in heater on (`1`) or off (`0`). |
+| `HAL_StatusTypeDef SHT3xSTM32_HeaterTest(SHT3xSTM32_Handle_t *handle)` | `handle` – handle previously set up with `SHT3xSTM32_Init()` | `HAL_OK` if the heater measurably raised the temperature, `HAL_ERROR` if a read/transmit failed or the rise wasn't big enough to count as a pass | Reads, enables the heater for ~10 s, reads again, and returns `HAL_OK` if temperature rose by more than 0.5 °C. Always turns the heater back off, even on a failed read. |
 
 ### Conversion / low-level helpers
 
-| Function | Description |
-|---|---|
-| `SHT3xSTM32_ConvertTemperature(rawTemp)` | Raw 16-bit code → °C. |
-| `SHT3xSTM32_ConvertHumidity(rawHumidity)` | Raw 16-bit code → %RH. |
-| `SHT3xSTM32_BytesToUint16(byteHigh, byteLow)` | Combines two bytes (MSB-first, as sent by the sensor) into one `uint16_t`. |
-| `SHT3xSTM32_CalculateCRC(data, length)` | Computes the sensor's CRC-8 checksum over a byte block for validation. |
+| Function | Parameters | Returns | Description |
+| --- | --- | --- | --- |
+| `float SHT3xSTM32_ConvertTemperature(uint16_t rawTemp)` | `rawTemp` – raw 16-bit temperature value read from the sensor | Temperature in °C | Raw 16-bit code → °C. |
+| `float SHT3xSTM32_ConvertHumidity(uint16_t rawHumidity)` | `rawHumidity` – raw 16-bit humidity value read from the sensor | Relative humidity in % (0-100) | Raw 16-bit code → %RH. |
+| `uint16_t SHT3xSTM32_BytesToUint16(uint8_t byteHigh, uint8_t byteLow)` | `byteHigh` – upper 8 bits (sent first by the sensor)<br>`byteLow` – lower 8 bits (sent second by the sensor) | The combined 16-bit value | Combines two bytes (MSB-first, as sent by the sensor) into one `uint16_t`. |
+| `uint8_t SHT3xSTM32_CalculateCRC(uint8_t *data, uint8_t length)` | `data` – bytes to check<br>`length` – number of bytes in `data` | The calculated checksum; compare it to the sensor's checksum byte | Computes the sensor's CRC-8 checksum over a byte block for validation. |
 
 ### UART debug menu
 
-| Function | Description |
-|---|---|
-| `SHT3xSTM32_Debug_Init(uart, handle)` | Registers the UART and sensor handle used by the menu. Call once, after `SHT3xSTM32_Init()`. |
-| `SHT3xSTM32_UART_MenuHandler(void)` | Blocking loop that prints a menu and handles `r` (read), `h` (heater test), and `q`/`x` (quit) over the debug UART. |
+| Function | Parameters | Returns | Description |
+| --- | --- | --- | --- |
+| `HAL_StatusTypeDef SHT3xSTM32_Debug_Init(UART_HandleTypeDef *uart, SHT3xSTM32_Handle_t *handle)` | `uart` – UART handle for the debug console<br>`handle` – initialized sensor handle (must already have gone through `SHT3xSTM32_Init()`) | `HAL_OK` on success, `HAL_ERROR` if either pointer is NULL | Registers the UART and sensor handle used by the menu. Call once, after `SHT3xSTM32_Init()`. |
+| `void SHT3xSTM32_UART_MenuHandler(void)` | none | none | Blocking loop that prints a menu and handles `r` (read), `h` (heater test), and `q`/`x` (quit) over the debug UART. |
 
 
 ## Usage example
