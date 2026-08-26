@@ -117,7 +117,7 @@ int main(void)
   MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
   //data refresh time in ms
-  static uint_16_t Data_refresh_time = 10000;
+  static uint16_t Data_refresh_time = 10000;
 
     HAL_TIM_Base_Start(&htim6);
 		SHT3xSTM32_Handle_t sht3xHandle;
