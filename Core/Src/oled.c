@@ -359,7 +359,7 @@ void OLED_PlayStartupAnimation(void) {
 
     Display_DrawString(8, 16, "SHT3X SENSOR", COLOR_CYAN, COLOR_BLACK);
     Display_DrawString(16, 32, "[ READY ]", COLOR_GREEN, COLOR_BLACK);
-    Display_DrawString(0, 48, "Emmerich / Wieser", COLOR_MAGENTA, COLOR_WHITE);
+    Display_DrawString(0, 48, "EMMRICH / WIESER", COLOR_MAGENTA, COLOR_WHITE);
     HAL_Delay(700);
 
     // Phase 4: Smooth Fade-out Screen Flash
