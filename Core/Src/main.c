@@ -116,6 +116,9 @@ int main(void)
   MX_I2C1_Init();
   MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
+  //data refresh time in ms
+  static uint_16_t Data_refresh_time = 10000;
+
     HAL_TIM_Base_Start(&htim6);
 		SHT3xSTM32_Handle_t sht3xHandle;
 		if (SHT3xSTM32_Init(&sht3xHandle, &hi2c1, 0x44) != HAL_OK) {
@@ -132,11 +135,13 @@ int main(void)
       Display_SetOrigin(OFFSET_X, OFFSET_Y);
 
       HAL_Delay(100);
+      //just playing around
       OLED_PlayStartupAnimation();
+      //Show that there is no Data currently
       OLED_ShowPlaceholder();
       HAL_Delay(1234);
-      SHT3xSTM32_UART_MenuHandler();
 
+      SHT3xSTM32_UART_MenuHandler();
 
 
   /* USER CODE END 2 */
@@ -150,7 +155,7 @@ int main(void)
 
 	      /* Read SHT3x sensor once per second */
 	  static uint32_t lastSensorRead = 0;
-	  if (HAL_GetTick() - lastSensorRead >= 10000)
+	  if (HAL_GetTick() - lastSensorRead >= Data_refresh_time)
 	  {
 		lastSensorRead = HAL_GetTick();
 
