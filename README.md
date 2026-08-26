@@ -8,7 +8,7 @@ This driver allows the user to get temperature and humidity readings from an SHT
 
   - Sensor init with bus presence check (`HAL_I2C_IsDeviceReady`) and soft reset
 
-- Single-shot, high-repeatability measurement (clock-stretching command `0x2C06`)
+- Single-shot, high-repeatability measurement (0x2C06). Clock stretching is not relied upon — a fixed 15 ms delay is used before reading, per the datasheet's worst-case conversion time.
 
 - CRC-8 check on both the temperature and humidity bytes before the reading is accepted
 
